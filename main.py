@@ -6,6 +6,10 @@ import sys
 from chmslGui import *
 from chmslControl import *
 
+activebtns = []
+schedbtns = []
+stackedWidget = 0
+groupBox = 0
 
 class chmslBench(QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -13,7 +17,11 @@ class chmslBench(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.chmsl = chmslControl()
         
+        global activeBtns, schedBtns, stackedWidget
 
+        stackedWidget = self.stackedWidget
+        groupBox = self.groupBox
+        
         activeBtns = [self.pushButton_1,
                       self.pushButton_2,
                       self.pushButton_3,
@@ -80,6 +88,9 @@ class chmslBench(QMainWindow, Ui_MainWindow):
         self.activeBtn.clicked.connect(self.showActive)
         self.scheduleBtn.clicked.connect(self.showSchedule)
 
+        self.startAutoBtn.clicked.connect(lambda: self.runAutoTest())
+
+
     def print_test(self):
         print('test')
 
@@ -90,6 +101,92 @@ class chmslBench(QMainWindow, Ui_MainWindow):
     def showSchedule(self):
         self.stackedWidget.setCurrentIndex(1)
         self.groupBox.setTitle('Schedule Charging')
+
+    def disAllBtns(self):
+        for eachBtn in activeBtns:
+            eachBtn.setEnabled(False)
+        for eachBtn in schedBtns:
+            eachBtn.setEnabled(False)
+
+    def enAllBtns(self):
+        for eachBtn in activeBtns:
+            eachBtn.setEnabled(True)
+        for eachBtn in schedBtns:
+            eachBtn.setEnabled(True)
+
+    # run autotest in a separate thread
+    def runAutoTest(self):
+        global autoTestThreadExit
+        print('Starting Auto Test.\n')
+        autoTestThreadExit = False
+        #self.disAllBtns()
+        self.autoTest()
+        self.startAutoBtn.setText('Stop Auto Test')
+        self.startAutoBtn.clicked.disconnect()
+        self.startAutoBtn.clicked.connect(lambda: self.stopAutoTest())
+        
+
+    # raise exit flag for autotest to stop
+    def stopAutoTest(self):
+        global autoTestThreadExit
+        print('Stopping Auto Test.\n')
+        autoTestThreadExit = True
+        #self.enAllBtns()
+        self.startAutoBtn.setText('Start Auto Test')
+        self.startAutoBtn.clicked.disconnect()
+        self.startAutoBtn.clicked.connect(lambda: self.runAutoTest())
+
+
+    class autoTest(object):
+        global autoTestThreadExit
+        
+        def __init__(self):
+            thread = threading.Thread(target=self.run, args=())
+            thread.daemon = True                
+            thread.start()                                  
+
+        def run(self):
+            global autoTestThreadExit, activeBtns, schedBtns
+            print('Auto test thread running...')
+            for eachBtn in activeBtns:
+                if autoTestThreadExit: return
+                eachBtn.click()
+                eachBtn.setDown(True)
+                time.sleep(autotestDelay)
+                eachBtn.setDown(False)
+
+            stackedWidget.setCurrentIndex(1)
+            self.groupBox.setTitle('Schedule Charging')
+
+            for eachBtn in schedBtns:
+                if autoTestThreadExit: return
+                eachBtn.click()
+                eachBtn.setDown(True)
+                time.sleep(autotestDelay)
+                eachBtn.setDown(False)
+
+            stackedWidget.setCurrentIndex(0)
+            self.groupBox.setTitle('Active Charging')
+            
+##            x = chmslControl()
+##
+##            # active charging testing
+##            for dc1, dc2, b in zip(activePWM1, activePWM2, activeBtns):
+##                if autoTestThreadExit:
+##                    return                
+##                x.setPWM(dc1=dc1, dc2=dc2)
+##                #print('dc1: {}, dc2: {}'.format(dc1, dc2))
+##                time.sleep(autotestDelay)
+##
+##            # schedule charging testing
+##            for dc1, dc2 in zip(schedPWM1, schedPWM2):
+##                if autoTestThreadExit:
+##                    return                
+##                x.setPWM(dc1=dc1, dc2=dc2)
+##                #print('dc1: {}, dc2: {}'.format(dc1, dc2))
+##                time.sleep(autotestDelay)
+
+            autoTestThreadExit = True
        
 def main():
     app = QApplication(sys.argv)
