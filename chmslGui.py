@@ -12,9 +12,15 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 480)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
+        MainWindow.setSizePolicy(sizePolicy)
+        MainWindow.setMinimumSize(QtCore.QSize(800, 480))
+        MainWindow.setMaximumSize(QtCore.QSize(800, 480))
         MainWindow.setWindowOpacity(1.0)
         MainWindow.setStyleSheet("QWidget {\n"
-"    background-color: transparent;\n"
 "    color: rgb(218, 218, 218);\n"
 "}\n"
 "\n"
@@ -23,10 +29,15 @@ class Ui_MainWindow(object):
 "}\n"
 "\n"
 "QPushButton {\n"
-"    background-color: rgba(59, 56, 56, 80);\n"
+"    background-color: rgb(59, 56, 56);\n"
 "    font: 10pt \"MS Shell Dlg 2\";\n"
 "    height: 40px;\n"
 "}\n"
+"\n"
+"QPushButton::pressed, QPushButton::hover {\n"
+"    background-color: rgb(50, 100, 150);\n"
+"}\n"
+"\n"
 "\n"
 "QRadioButton::indicator {\n"
 "    width: 30px;\n"
@@ -37,7 +48,7 @@ class Ui_MainWindow(object):
 "    background-color: transparent;\n"
 "    border: 1px solid gray;\n"
 "    border-radius: 10px;\n"
-"    margin-top: 10px;\n"
+"    margin-top: 8px;\n"
 "}\n"
 "\n"
 "QGroupBox::title {\n"
@@ -47,10 +58,12 @@ class Ui_MainWindow(object):
 "}\n"
 "\n"
 "QStatusBar {\n"
-"    background: transparent;\n"
+"    background: black;\n"
 "}\n"
 "\n"
+"\n"
 "QTabWidget::pane {\n"
+"    background-color: transparent;\n"
 "    border: 1px solid gray;\n"
 "}\n"
 "\n"
@@ -76,8 +89,15 @@ class Ui_MainWindow(object):
 "\n"
 "QTabBar::tab:!selected {\n"
 "    background-color: transparent;\n"
-"}")
+"}\n"
+"\n"
+"QStackedWidget {\n"
+"    background-color: transparent;\n"
+"}\n"
+"\n"
+"")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setAutoFillBackground(False)
         self.centralwidget.setObjectName("centralwidget")
         self.background = QtWidgets.QLabel(self.centralwidget)
         self.background.setGeometry(QtCore.QRect(0, 0, 800, 480))
@@ -91,10 +111,21 @@ class Ui_MainWindow(object):
         self.groupBox = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox.setGeometry(QtCore.QRect(30, 80, 741, 341))
         self.groupBox.setAutoFillBackground(False)
-        self.groupBox.setStyleSheet("")
+        self.groupBox.setStyleSheet("QPushButton {\n"
+"    background-color: transparent;\n"
+"    border: 1px solid gray;\n"
+"    border-radius: 5px;\n"
+"}\n"
+"\n"
+"QPushButton::pressed, QPushButton::hover {\n"
+"    background-color:rgb(56, 112, 168) ;\n"
+"}")
         self.groupBox.setObjectName("groupBox")
         self.stackedWidget = QtWidgets.QStackedWidget(self.groupBox)
+        self.stackedWidget.setEnabled(True)
         self.stackedWidget.setGeometry(QtCore.QRect(30, 30, 681, 291))
+        self.stackedWidget.setStyleSheet("")
+        self.stackedWidget.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.stackedWidget.setObjectName("stackedWidget")
         self.activePage = QtWidgets.QWidget()
         self.activePage.setObjectName("activePage")
@@ -205,31 +236,25 @@ class Ui_MainWindow(object):
         self.pushButton_59.setObjectName("pushButton_59")
         self.gridLayout_2.addWidget(self.pushButton_59, 4, 1, 1, 1)
         self.stackedWidget.addWidget(self.schedulePage)
-        self.layoutWidget.raise_()
-        self.stackedWidget.raise_()
         self.titleBar = QtWidgets.QLabel(self.centralwidget)
         self.titleBar.setGeometry(QtCore.QRect(0, 0, 819, 82))
         self.titleBar.setObjectName("titleBar")
         self.activeBtn = QtWidgets.QPushButton(self.centralwidget)
-        self.activeBtn.setGeometry(QtCore.QRect(30, 50, 125, 30))
+        self.activeBtn.setGeometry(QtCore.QRect(30, 10, 125, 30))
         self.activeBtn.setObjectName("activeBtn")
         self.scheduleBtn = QtWidgets.QPushButton(self.centralwidget)
-        self.scheduleBtn.setGeometry(QtCore.QRect(630, 50, 145, 30))
+        self.scheduleBtn.setGeometry(QtCore.QRect(630, 10, 145, 30))
         self.scheduleBtn.setObjectName("scheduleBtn")
-        self.startAutoBtn = QtWidgets.QPushButton(self.centralwidget)
-        self.startAutoBtn.setGeometry(QtCore.QRect(30, 430, 121, 28))
-        self.startAutoBtn.setObjectName("startAutoBtn")
-        self.stopAutoBtn = QtWidgets.QPushButton(self.centralwidget)
-        self.stopAutoBtn.setGeometry(QtCore.QRect(650, 430, 121, 28))
-        self.stopAutoBtn.setObjectName("stopAutoBtn")
+        self.autotestBtn = QtWidgets.QPushButton(self.centralwidget)
+        self.autotestBtn.setGeometry(QtCore.QRect(30, 430, 121, 28))
+        self.autotestBtn.setObjectName("autotestBtn")
         self.background.raise_()
         self.titleBar.raise_()
         self.groupBox.raise_()
         self.titleText.raise_()
         self.activeBtn.raise_()
         self.scheduleBtn.raise_()
-        self.startAutoBtn.raise_()
-        self.stopAutoBtn.raise_()
+        self.autotestBtn.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -277,7 +302,6 @@ class Ui_MainWindow(object):
         self.titleBar.setText(_translate("MainWindow", "<html><head/><body><p><img src=\":/titlebar/graphics/titlebar.png\"/></p></body></html>"))
         self.activeBtn.setText(_translate("MainWindow", "Active Charging"))
         self.scheduleBtn.setText(_translate("MainWindow", "Schedule Charging"))
-        self.startAutoBtn.setText(_translate("MainWindow", "Start Auto Test"))
-        self.stopAutoBtn.setText(_translate("MainWindow", "Stop Auto Test"))
+        self.autotestBtn.setText(_translate("MainWindow", "Start Auto Test"))
 
 import graphics_rc

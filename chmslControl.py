@@ -9,7 +9,7 @@ import threading
 chmslFreq = 200
 pwm1Pin = 17
 pwm2Pin = 18
-autotestDelay = 2 # in seconds
+
 
 activePWM1 = [ 0, 10, 20, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 40]
 activePWM2 = [ 0,  0,  0,  6, 14, 22, 30, 38, 46, 54, 62, 70, 78, 86,  0]
@@ -24,7 +24,7 @@ class chmslControl():
         print('initializing...')
         # initialize pigpio        
         self.pi = pigpio.pi()
-
+        
         # must initalize pwm1, but pwm2 is not needed
         self.initPWM1()
 
@@ -59,54 +59,3 @@ class chmslControl():
         self.pi.set_PWM_dutycycle(pwm1Pin, 0)
         self.pi.set_PWM_dutycycle(pwm2Pin, 0)
         self.pi.stop()
-
-
-    # run autotest in a separate thread
-    def runAutoTest(self):
-        global autoTestThreadExit
-        #global autotestBtn
-        print('Starting Auto Test.\n')
-        autoTestThreadExit = False
-        #disableAllButtons()
-        autoTest()
-        #autotestBtn.config(text='Stop Auto Test', command=lambda: stopAutoTest())
-        
-    # raise exit flag for autotest to stop
-    def stopAutoTest():
-        global autoTestThreadExit
-        #global autotestBtn
-        print('Stopping Auto Test.\n')
-        autoTestThreadExit = True
-        #autotestBtn.config(text='Start Auto Test', command=lambda: runAutoTest())
-
-
-class autoTest(object):
-    global thread
-    global autoTestThreadExit
-    
-    def __init__(self):
-        global thread
-        thread = threading.Thread(target=self.run, args=())
-        thread.daemon = True                
-        thread.start()                                  
-
-    def run(self):
-        global autoTestThreadExit
-
-        print('Auto test thread running...')
-
-##        for dc1, dc2, b in zip(activePWM1, activePWM2, activeBtns):
-##            if autoTestThreadExit:
-##                return                
-##            setPWM(button=b, dc1=dc1, dc2=dc2)
-##            time.sleep(autotestDelay)
-##
-##        for dc1, dc2, b in zip(schedPWM1, schedPWM2, schedBtns):
-##            if autoTestThreadExit:
-##                return                
-##            setPWM(button=b, dc1=dc1, dc2=dc2)
-##            time.sleep(autotestDelay)
-
-
-
-        autoTestThreadExit = True
