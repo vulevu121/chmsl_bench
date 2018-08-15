@@ -10,24 +10,53 @@ chmslFreq = 200
 pwm1Pin = 17
 pwm2Pin = 18
 
-
 activePWM1 = [ 0, 10, 20, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 40]
 activePWM2 = [ 0,  0,  0,  6, 14, 22, 30, 38, 46, 54, 62, 70, 78, 86,  0]
 
 schedPWM1  = [ 0, 10, 20, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50] 
 schedPWM2  = [ 0,  0,  0,  6, 14, 22, 30, 38, 46, 54, 62, 70, 78, 86]
 
-autoTestThreadExit = False
+activeBtnsText = ['No Display && Asleep',
+                  'No Display && Awake',
+                  'Plug Recognition',
+                  'SOC: 0% - 9%',
+                  'SOC: 10% - 19%',
+                  'SOC: 20% - 29%',
+                  'SOC: 30% - 39%',
+                  'SOC: 40% - 49%',
+                  'SOC: 50% - 59%',
+                  'SOC: 60% - 69%',
+                  'SOC: 70% - 79%',
+                  'SOC: 80% - 89%',
+                  'SOC: 90% - 99%',
+                  'SOC: 100%',
+                  'Fault']
+
+
+scheduBtnsText = ['No Display && Asleep',
+                  'No Display && Awake',
+                  'Plug Recognition',
+                  'SOC: 0% - 9%',
+                  'SOC: 10% - 19%',
+                  'SOC: 20% - 29%',
+                  'SOC: 30% - 39%',
+                  'SOC: 40% - 49%',
+                  'SOC: 50% - 59%',
+                  'SOC: 60% - 69%',
+                  'SOC: 70% - 79%',
+                  'SOC: 80% - 89%',
+                  'SOC: 90% - 99%',
+                  'SOC: 100%']
+
 
 class chmslControl():
     def __init__(self):
-        print('initializing...')
+        print('CHMSL Control initiated.')
         # initialize pigpio        
         self.pi = pigpio.pi()
         
         # must initalize pwm1, but pwm2 is not needed
         self.initPWM1()
-
     
     # initialize pwm1 and set dc range to 0-100
     # software pwm requires initialization
@@ -41,13 +70,13 @@ class chmslControl():
     def setPWM1(self, duty, freq=chmslFreq):
         self.pi.set_PWM_frequency(pwm1Pin, freq)
         self.pi.set_PWM_dutycycle(pwm1Pin, (duty))
-        print('PWM_1 Duty Cycle: {}%'.format(duty))
+        print('PWM 1 Duty Cycle: {}%'.format(duty))
 
     # set pwm2 with desired duty cycle
     # hardware pwm, does not require initialization
     def setPWM2(self, duty, freq=chmslFreq):
         self.pi.hardware_PWM(pwm2Pin, freq, (duty)*10000)
-        print('PWM_2 Duty Cycle: {}%'.format(duty))
+        print('PWM 2 Duty Cycle: {}%'.format(duty))
 
     # sets both pwm1 and pwm2 channels to desired duty cycles
     def setPWM(self, dc1, dc2):
