@@ -8,8 +8,11 @@ from chmslControl import *
 
 activebtns = []
 schedbtns = []
-stackedWidget = 0
-groupBox = 0
+##stackedWidget = 0
+##groupBox = 0
+##statusBar = 0
+##startAutoBtn = 0
+autotestDelay = 1 # in seconds
 
 class chmslBench(QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -17,10 +20,12 @@ class chmslBench(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.chmsl = chmslControl()
         
-        global activeBtns, schedBtns, stackedWidget
+        global activeBtns, schedBtns
 
-        stackedWidget = self.stackedWidget
-        groupBox = self.groupBox
+##        stackedWidget = self.stackedWidget
+##        groupBox = self.groupBox
+##        statusBar = self.statusbar
+##        startAutoBtn = self.startAutoBtn
         
         activeBtns = [self.pushButton_1,
                       self.pushButton_2,
@@ -52,43 +57,52 @@ class chmslBench(QMainWindow, Ui_MainWindow):
                      self.pushButton_57,
                      self.pushButton_58,
                      self.pushButton_59]
-        
-        activeBtns[0].clicked.connect(lambda: self.chmsl.setPWM(activePWM1[0], activePWM2[0]))
-        activeBtns[1].clicked.connect(lambda: self.chmsl.setPWM(activePWM1[1], activePWM2[1]))
-        activeBtns[2].clicked.connect(lambda: self.chmsl.setPWM(activePWM1[2], activePWM2[2]))
-        activeBtns[3].clicked.connect(lambda: self.chmsl.setPWM(activePWM1[3], activePWM2[3]))
-        activeBtns[4].clicked.connect(lambda: self.chmsl.setPWM(activePWM1[4], activePWM2[4]))
-        activeBtns[5].clicked.connect(lambda: self.chmsl.setPWM(activePWM1[5], activePWM2[5]))
-        activeBtns[6].clicked.connect(lambda: self.chmsl.setPWM(activePWM1[6], activePWM2[6]))
-        activeBtns[7].clicked.connect(lambda: self.chmsl.setPWM(activePWM1[7], activePWM2[7]))
-        activeBtns[8].clicked.connect(lambda: self.chmsl.setPWM(activePWM1[8], activePWM2[8]))
-        activeBtns[9].clicked.connect(lambda: self.chmsl.setPWM(activePWM1[9], activePWM2[9]))
-        activeBtns[10].clicked.connect(lambda: self.chmsl.setPWM(activePWM1[10], activePWM2[10]))
-        activeBtns[11].clicked.connect(lambda: self.chmsl.setPWM(activePWM1[11], activePWM2[11]))
-        activeBtns[12].clicked.connect(lambda: self.chmsl.setPWM(activePWM1[12], activePWM2[12]))
-        activeBtns[13].clicked.connect(lambda: self.chmsl.setPWM(activePWM1[13], activePWM2[13]))
-        activeBtns[14].clicked.connect(lambda: self.chmsl.setPWM(activePWM1[14], activePWM2[14]))
 
-        schedBtns[0].clicked.connect(lambda: self.chmsl.setPWM(schedPWM1[0], schedPWM2[0]))
-        schedBtns[1].clicked.connect(lambda: self.chmsl.setPWM(schedPWM1[1], schedPWM2[1]))
-        schedBtns[2].clicked.connect(lambda: self.chmsl.setPWM(schedPWM1[2], schedPWM2[2]))
-        schedBtns[3].clicked.connect(lambda: self.chmsl.setPWM(schedPWM1[3], schedPWM2[3]))
-        schedBtns[4].clicked.connect(lambda: self.chmsl.setPWM(schedPWM1[4], schedPWM2[4]))
-        schedBtns[5].clicked.connect(lambda: self.chmsl.setPWM(schedPWM1[5], schedPWM2[5]))
-        schedBtns[6].clicked.connect(lambda: self.chmsl.setPWM(schedPWM1[6], schedPWM2[6]))
-        schedBtns[7].clicked.connect(lambda: self.chmsl.setPWM(schedPWM1[7], schedPWM2[7]))
-        schedBtns[8].clicked.connect(lambda: self.chmsl.setPWM(schedPWM1[8], schedPWM2[8]))
-        schedBtns[9].clicked.connect(lambda: self.chmsl.setPWM(schedPWM1[9], schedPWM2[9]))
-        schedBtns[10].clicked.connect(lambda: self.chmsl.setPWM(schedPWM1[10], schedPWM2[10]))
-        schedBtns[11].clicked.connect(lambda: self.chmsl.setPWM(schedPWM1[11], schedPWM2[11]))
-        schedBtns[12].clicked.connect(lambda: self.chmsl.setPWM(schedPWM1[12], schedPWM2[12]))
-        schedBtns[13].clicked.connect(lambda: self.chmsl.setPWM(schedPWM1[13], schedPWM2[13]))
+        activeBtns[0].clicked.connect(lambda: self.setActivePWM(0))
+        activeBtns[1].clicked.connect(lambda: self.setActivePWM(1))
+        activeBtns[2].clicked.connect(lambda: self.setActivePWM(2))
+        activeBtns[3].clicked.connect(lambda: self.setActivePWM(3))
+        activeBtns[4].clicked.connect(lambda: self.setActivePWM(4))
+        activeBtns[5].clicked.connect(lambda: self.setActivePWM(5))
+        activeBtns[6].clicked.connect(lambda: self.setActivePWM(6))
+        activeBtns[7].clicked.connect(lambda: self.setActivePWM(7))
+        activeBtns[8].clicked.connect(lambda: self.setActivePWM(8))
+        activeBtns[9].clicked.connect(lambda: self.setActivePWM(9))
+        activeBtns[10].clicked.connect(lambda: self.setActivePWM(10))
+        activeBtns[11].clicked.connect(lambda: self.setActivePWM(11))
+        activeBtns[12].clicked.connect(lambda: self.setActivePWM(12))
+        activeBtns[13].clicked.connect(lambda: self.setActivePWM(13))
+        activeBtns[14].clicked.connect(lambda: self.setActivePWM(14))
 
+        schedBtns[0].clicked.connect(lambda: self.setSchedPWM(0))
+        schedBtns[1].clicked.connect(lambda: self.setSchedPWM(1))
+        schedBtns[2].clicked.connect(lambda: self.setSchedPWM(2))
+        schedBtns[3].clicked.connect(lambda: self.setSchedPWM(3))
+        schedBtns[4].clicked.connect(lambda: self.setSchedPWM(4))
+        schedBtns[5].clicked.connect(lambda: self.setSchedPWM(5))
+        schedBtns[6].clicked.connect(lambda: self.setSchedPWM(6))
+        schedBtns[7].clicked.connect(lambda: self.setSchedPWM(7))
+        schedBtns[8].clicked.connect(lambda: self.setSchedPWM(8))
+        schedBtns[9].clicked.connect(lambda: self.setSchedPWM(9))
+        schedBtns[10].clicked.connect(lambda: self.setSchedPWM(10))
+        schedBtns[11].clicked.connect(lambda: self.setSchedPWM(11))
+        schedBtns[12].clicked.connect(lambda: self.setSchedPWM(12))
+        schedBtns[13].clicked.connect(lambda: self.setSchedPWM(13))
 
         self.activeBtn.clicked.connect(self.showActive)
         self.scheduleBtn.clicked.connect(self.showSchedule)
 
         self.startAutoBtn.clicked.connect(lambda: self.runAutoTest())
+
+        self.statusbar.showMessage('Ready')
+
+    def setActivePWM(self, idx):
+        self.chmsl.setPWM(activePWM1[idx], activePWM2[idx])
+        self.statusbar.showMessage('Active (Flashing), PWM1 DC: {}%, PWM2 DC: {}%'.format(activePWM1[idx], activePWM2[idx]))
+
+    def setSchedPWM(self, idx):
+        self.chmsl.setPWM(schedPWM1[idx], schedPWM2[idx])
+        self.statusbar.showMessage('Schedule (Solid), PWM1 DC: {}%, PWM2 DC: {}%'.format(schedPWM1[idx], schedPWM2[idx]))
 
 
     def print_test(self):
@@ -120,15 +134,20 @@ class chmslBench(QMainWindow, Ui_MainWindow):
         print('Starting Auto Test.\n')
         autoTestThreadExit = False
         #self.disAllBtns()
-        self.autoTest()
+        #self.autoTest()
         self.startAutoBtn.setText('Stop Auto Test')
         self.startAutoBtn.clicked.disconnect()
         self.startAutoBtn.clicked.connect(lambda: self.stopAutoTest())
-        
 
+        thread = threading.Thread(target=self.autoTest, args=())
+        thread.daemon = True
+        thread.start()
+       
+        
     # raise exit flag for autotest to stop
     def stopAutoTest(self):
         global autoTestThreadExit
+        self.statusbar.showMessage('Auto test stopped')
         print('Stopping Auto Test.\n')
         autoTestThreadExit = True
         #self.enAllBtns()
@@ -137,37 +156,75 @@ class chmslBench(QMainWindow, Ui_MainWindow):
         self.startAutoBtn.clicked.connect(lambda: self.runAutoTest())
 
 
-    class autoTest(object):
+    def autoTest(self):
+        print('Auto test thread running...')
         global autoTestThreadExit
+        self.statusbar.showMessage('Auto test started')
+        self.showActive()
+
+        for eachBtn in activeBtns:
+            if autoTestThreadExit: return
+            eachBtn.click()
+            eachBtn.setDown(True)
+            time.sleep(autotestDelay)
+            eachBtn.setDown(False)
+
+        self.showSchedule()
+        time.sleep(1)
+
+        for eachBtn in schedBtns:
+            if autoTestThreadExit: return
+            eachBtn.click()
+            eachBtn.setDown(True)
+            time.sleep(autotestDelay)
+            eachBtn.setDown(False)
+
+        self.stopAutoTest()
+        self.update()
         
-        def __init__(self):
-            thread = threading.Thread(target=self.run, args=())
-            thread.daemon = True                
-            thread.start()                                  
 
-        def run(self):
-            global autoTestThreadExit, activeBtns, schedBtns
-            print('Auto test thread running...')
-            for eachBtn in activeBtns:
-                if autoTestThreadExit: return
-                eachBtn.click()
-                eachBtn.setDown(True)
-                time.sleep(autotestDelay)
-                eachBtn.setDown(False)
 
-            stackedWidget.setCurrentIndex(1)
-            self.groupBox.setTitle('Schedule Charging')
-
-            for eachBtn in schedBtns:
-                if autoTestThreadExit: return
-                eachBtn.click()
-                eachBtn.setDown(True)
-                time.sleep(autotestDelay)
-                eachBtn.setDown(False)
-
-            stackedWidget.setCurrentIndex(0)
-            self.groupBox.setTitle('Active Charging')
-            
+##    class autoTest(object):
+##        global autoTestThreadExit
+##        
+##        def __init__(self):
+##            thread = threading.Thread(target=self.run, args=())
+##            thread.daemon = True                
+##            thread.start()                                  
+##
+##        def run(self):
+##            global autoTestThreadExit
+##            statusBar.showMessage('Running auto test')
+##            print('Auto test thread running...')
+##            for eachBtn in activeBtns:
+##                if autoTestThreadExit: return
+##                eachBtn.click()
+##                eachBtn.setDown(True)
+##                time.sleep(autotestDelay)
+##                eachBtn.setDown(False)
+##
+##            
+##            stackedWidget.setCurrentIndex(1)
+##            groupBox.setTitle('Schedule Charging')
+##            time.sleep(0.2)
+##
+##            for eachBtn in schedBtns:
+##                if autoTestThreadExit: return
+##                eachBtn.click()
+##                eachBtn.setDown(True)
+##                time.sleep(autotestDelay)
+##                eachBtn.setDown(False)
+##
+##            statusBar.showMessage('Auto test stopped')
+##            startAutoBtn.setText('Start Auto Test')
+##            startAutoBtn.clicked.disconnect()
+##            startAutoBtn.clicked.connect(lambda: self.runAutoTest())
+##
+##            
+##
+##            stackedWidget.setCurrentIndex(0)
+##            groupBox.setTitle('Active Charging')
+##            
 ##            x = chmslControl()
 ##
 ##            # active charging testing
@@ -185,8 +242,8 @@ class chmslBench(QMainWindow, Ui_MainWindow):
 ##                x.setPWM(dc1=dc1, dc2=dc2)
 ##                #print('dc1: {}, dc2: {}'.format(dc1, dc2))
 ##                time.sleep(autotestDelay)
-
-            autoTestThreadExit = True
+##
+##            autoTestThreadExit = True
        
 def main():
     app = QApplication(sys.argv)
